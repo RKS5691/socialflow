@@ -79,12 +79,22 @@
     background:var(--accent);color:#fff;border:none;border-radius:8px;
     padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity 0.15s;
   }
-  .publish-btn:hover { opacity:0.85; }
+  .publish-btn:hover { opacity:0.85;transform:translateY(-1px); }
+  .save-btn:hover { opacity:0.85;transform:translateY(-1px); }
+  .save-btn, .publish-btn { transition:opacity 0.15s,transform 0.15s; }
 
   /* CONTENT */
   .content { padding:28px;flex:1; }
   .page { display:none; }
-  .page.active { display:block; }
+  .page.active { display:block; animation:fadeIn 0.35s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px);} to{opacity:1;transform:translateY(0);} }
+
+  .toggle-switch { position:relative;display:inline-block;width:42px;height:24px;flex-shrink:0; }
+  .toggle-switch input { opacity:0;width:0;height:0; }
+  .toggle-slider { position:absolute;cursor:pointer;inset:0;background:var(--border);border-radius:24px;transition:0.2s; }
+  .toggle-slider::before { content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:0.2s; }
+  .toggle-switch input:checked + .toggle-slider { background:var(--accent); }
+  .toggle-switch input:checked + .toggle-slider::before { transform:translateX(18px); }
 
   /* DASHBOARD */
   .page-header { margin-bottom:24px; }
@@ -728,56 +738,184 @@
       </div>
     </div>
 
-    <!-- GENERIC PAGES -->
+    <!-- AUTOMATION -->
     <div class="page" id="page-automation">
-      <div class="page-header"><h1>Automation</h1><p>Set up automated workflows for your social media.</p></div>
-      <div class="card" style="padding:48px;text-align:center">
-        <div style="font-size:48px;margin-bottom:16px">🔄</div>
-        <h2 style="margin-bottom:8px">No automations yet</h2>
-        <p style="color:var(--muted);margin-bottom:20px">Create your first automation to save time on repetitive tasks.</p>
-        <button class="publish-btn" onclick="showToast('Automation builder coming soon!')">+ Create Automation</button>
+      <div class="page-header"><h1>Automation</h1><p>Set up automated workflows to save time and stay consistent.</p></div>
+      <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px">
+        <div class="stat-card"><div class="stat-top"><span class="stat-icon">⚡</span><span class="stat-badge up">Active</span></div><div class="stat-val">3</div><div class="stat-label">Running Automations</div></div>
+        <div class="stat-card"><div class="stat-top"><span class="stat-icon">⏱️</span><span class="stat-badge up">+18h</span></div><div class="stat-val">42h</div><div class="stat-label">Time Saved This Month</div></div>
+        <div class="stat-card"><div class="stat-top"><span class="stat-icon">✅</span><span class="stat-badge up">99.2%</span></div><div class="stat-val">286</div><div class="stat-label">Tasks Completed</div></div>
+      </div>
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-header"><span class="card-title">Active Workflows</span><button class="publish-btn" onclick="showToast('Opening automation builder...')">+ Create Automation</button></div>
+        <div class="post-list">
+          <div class="post-item">
+            <div class="post-thumb">🔁</div>
+            <div class="post-content"><div class="post-title">Auto-repost top performers to Stories</div><div class="post-meta">📸 Instagram · Triggers weekly · Last run: 2h ago</div></div>
+            <label class="toggle-switch"><input type="checkbox" checked onchange="showToast(this.checked ? 'Automation enabled' : 'Automation paused')"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="post-item">
+            <div class="post-thumb">💬</div>
+            <div class="post-content"><div class="post-title">Auto-reply to comments with keyword "price"</div><div class="post-meta">🐦 Twitter / X · Triggers on comment · Last run: 12m ago</div></div>
+            <label class="toggle-switch"><input type="checkbox" checked onchange="showToast(this.checked ? 'Automation enabled' : 'Automation paused')"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="post-item">
+            <div class="post-thumb">📊</div>
+            <div class="post-content"><div class="post-title">Weekly performance digest to Slack</div><div class="post-meta">💬 Slack · Triggers every Monday 9 AM · Last run: 3 days ago</div></div>
+            <label class="toggle-switch"><input type="checkbox" checked onchange="showToast(this.checked ? 'Automation enabled' : 'Automation paused')"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="post-item" style="opacity:0.6">
+            <div class="post-thumb">▶️</div>
+            <div class="post-content"><div class="post-title">Cross-post YouTube uploads to Twitter</div><div class="post-meta">▶️ YouTube → 🐦 Twitter · Triggers on new video · Paused</div></div>
+            <label class="toggle-switch"><input type="checkbox" onchange="showToast(this.checked ? 'Automation enabled' : 'Automation paused')"><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Suggested Templates</span></div>
+        <div class="form-grid">
+          <div class="integration-item" style="cursor:pointer" onclick="showToast('Template added!')"><div class="int-left"><div class="int-icon">🎯</div><div><div class="int-name">Engagement Booster</div><div class="int-desc">Auto-like & reply to mentions</div></div></div><button class="connect-btn">Use</button></div>
+          <div class="integration-item" style="cursor:pointer" onclick="showToast('Template added!')"><div class="int-left"><div class="int-icon">📅</div><div><div class="int-name">Evergreen Recycler</div><div class="int-desc">Reshare top posts monthly</div></div></div><button class="connect-btn">Use</button></div>
+        </div>
       </div>
     </div>
+
+    <!-- CONTENT CREATOR -->
     <div class="page" id="page-content">
-      <div class="page-header"><h1>Content Creator</h1><p>AI-powered content creation for all platforms.</p></div>
-      <div class="card" style="padding:32px">
+      <div class="page-header"><h1>Content Creator</h1><p>AI-powered content creation for all platforms, including YouTube.</p></div>
+      <div class="card" style="padding:32px;margin-bottom:20px">
         <div style="margin-bottom:16px;font-size:15px;font-weight:600">What do you want to create?</div>
         <div class="platform-chips" style="margin-bottom:20px">
-          <div class="chip selected">📸 Instagram</div>
-          <div class="chip">🐦 Twitter</div>
-          <div class="chip">💼 LinkedIn</div>
-          <div class="chip">📘 Facebook</div>
+          <div class="chip selected" onclick="this.classList.toggle('selected')">📸 Instagram</div>
+          <div class="chip" onclick="this.classList.toggle('selected')">🐦 Twitter</div>
+          <div class="chip" onclick="this.classList.toggle('selected')">💼 LinkedIn</div>
+          <div class="chip" onclick="this.classList.toggle('selected')">📘 Facebook</div>
+          <div class="chip" onclick="this.classList.toggle('selected')">▶️ YouTube</div>
         </div>
-        <textarea style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:14px;font-size:14px;font-family:inherit;resize:none;height:140px;outline:none;margin-bottom:16px" placeholder="Describe your post idea... e.g. 'Write an engaging post about our new product launch'"></textarea>
+        <div style="margin-bottom:12px;font-size:13px;font-weight:500;color:var(--muted)">CONTENT TYPE</div>
+        <div class="platform-chips" style="margin-bottom:20px">
+          <div class="chip selected" onclick="selectOnly(this)">📝 Post Caption</div>
+          <div class="chip" onclick="selectOnly(this)">🎬 Video Script</div>
+          <div class="chip" onclick="selectOnly(this)">📺 YouTube Title & Description</div>
+          <div class="chip" onclick="selectOnly(this)">#️⃣ Hashtag Set</div>
+        </div>
+        <textarea style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:14px;font-size:14px;font-family:inherit;resize:none;height:120px;outline:none;margin-bottom:16px" placeholder="Describe your post idea... e.g. 'Write an engaging post about our new product launch'"></textarea>
         <button class="publish-btn" onclick="showToast('Generating content with AI...')">✨ Generate with AI</button>
       </div>
-    </div>
-    <div class="page" id="page-platforms">
-      <div class="page-header"><h1>Platforms</h1><p>Manage your connected social accounts.</p></div>
-      <div class="stat-grid">
-        <div class="stat-card"><div class="stat-top"><span>📸</span><span class="stat-badge up">Active</span></div><div class="stat-val">@alexmorgan</div><div class="stat-label">Instagram · 98.2K followers</div></div>
-        <div class="stat-card"><div class="stat-top"><span>🐦</span><span class="stat-badge up">Active</span></div><div class="stat-val">@alex_m</div><div class="stat-label">Twitter · 34.1K followers</div></div>
-        <div class="stat-card"><div class="stat-top"><span>💼</span><span class="stat-badge up">Active</span></div><div class="stat-val">Alex Morgan</div><div class="stat-label">LinkedIn · 12.4K followers</div></div>
-        <div class="stat-card"><div class="stat-top"><span>▶️</span><span class="stat-badge down">Inactive</span></div><div class="stat-val">SocialFlow</div><div class="stat-label">YouTube · 6.9K subscribers</div></div>
-      </div>
-    </div>
-    <div class="page" id="page-subscription">
-      <div class="page-header"><h1>Subscription</h1><p>Manage your plan and billing.</p></div>
-      <div class="card" style="max-width:480px;padding:32px">
-        <div style="font-size:13px;color:var(--accent2);font-weight:600;margin-bottom:8px">CURRENT PLAN</div>
-        <div style="font-size:28px;font-weight:700;margin-bottom:4px">Pro Plan</div>
-        <div style="color:var(--muted);margin-bottom:24px">$29/month · Renews July 29, 2026</div>
-        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
-          <div>✅ Unlimited posts</div><div>✅ AI content generation</div>
-          <div>✅ Advanced analytics</div><div>✅ 5 social accounts</div>
-          <div>✅ Zapier & Google Analytics</div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Recent AI Generations</span></div>
+        <div class="post-list">
+          <div class="post-item"><div class="post-thumb">📺</div><div class="post-content"><div class="post-title">YouTube title: "We Tried 5 Growth Hacks — Here's What Worked"</div><div class="post-meta">▶️ YouTube · Generated 1h ago</div></div><span class="post-stats">Use</span></div>
+          <div class="post-item"><div class="post-thumb">📝</div><div class="post-content"><div class="post-title">"Consistency beats perfection. Post #47 of our 100-day challenge 🔥"</div><div class="post-meta">📸 Instagram · Generated 3h ago</div></div><span class="post-stats">Use</span></div>
+          <div class="post-item"><div class="post-thumb">#️⃣</div><div class="post-content"><div class="post-title">#GrowthHacks #ContentStrategy #SocialMediaTips #2025Trends</div><div class="post-meta">Hashtag set · Generated yesterday</div></div><span class="post-stats">Use</span></div>
         </div>
-        <button class="save-btn" onclick="showToast('Redirecting to billing portal...')">Manage Billing</button>
       </div>
     </div>
+
+    <!-- PLATFORMS (with full YouTube) -->
+    <div class="page" id="page-platforms">
+      <div class="page-header"><h1>Platforms</h1><p>Manage your connected social accounts and channel performance.</p></div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-top"><span class="stat-icon">📸</span><span class="stat-badge up">Active</span></div>
+          <div class="stat-val">@alexmorgan</div>
+          <div class="stat-label">Instagram · 98.2K followers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><span class="stat-icon">🐦</span><span class="stat-badge up">Active</span></div>
+          <div class="stat-val">@alex_m</div>
+          <div class="stat-label">Twitter / X · 34.1K followers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><span class="stat-icon">💼</span><span class="stat-badge up">Active</span></div>
+          <div class="stat-val">Alex Morgan</div>
+          <div class="stat-label">LinkedIn · 12.4K followers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><span class="stat-icon">📘</span><span class="stat-badge up">Active</span></div>
+          <div class="stat-val">SocialFlow Inc.</div>
+          <div class="stat-label">Facebook · 28.7K followers</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px;border:1px solid rgba(255,0,0,0.25)">
+        <div class="card-header">
+          <span class="card-title" style="display:flex;align-items:center;gap:10px"><span style="font-size:22px">▶️</span> YouTube — SocialFlow</span>
+          <span class="stat-badge up">Connected</span>
+        </div>
+        <div class="stat-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px">
+          <div class="stat-card"><div class="stat-top"><span class="stat-icon">👥</span><span class="stat-badge up">+9.4%</span></div><div class="stat-val">6,900</div><div class="stat-label">Subscribers</div></div>
+          <div class="stat-card"><div class="stat-top"><span class="stat-icon">👁️</span><span class="stat-badge up">+22%</span></div><div class="stat-val">214K</div><div class="stat-label">Views (30d)</div></div>
+          <div class="stat-card"><div class="stat-top"><span class="stat-icon">⏱️</span><span class="stat-badge up">+5.1%</span></div><div class="stat-val">4.2 min</div><div class="stat-label">Avg. Watch Time</div></div>
+          <div class="stat-card"><div class="stat-top"><span class="stat-icon">🎬</span><span class="stat-badge up">+3</span></div><div class="stat-val">38</div><div class="stat-label">Total Videos</div></div>
+        </div>
+        <div style="margin-bottom:10px;font-size:13px;font-weight:500;color:var(--muted)">RECENT VIDEOS</div>
+        <div class="post-list">
+          <div class="post-item"><div class="post-thumb">▶️</div><div class="post-content"><div class="post-title">Behind the Scenes: Product Launch Day</div><div class="post-meta">Uploaded 5 days ago · 8,900 views</div></div><span class="post-stats">👍 612</span></div>
+          <div class="post-item"><div class="post-thumb">▶️</div><div class="post-content"><div class="post-title">Weekly Wrap-Up: What We Learned This Week</div><div class="post-meta">Uploaded 12 days ago · 5,140 views</div></div><span class="post-stats">👍 388</span></div>
+          <div class="post-item"><div class="post-thumb">▶️</div><div class="post-content"><div class="post-title">5 Growth Hacks for 2025 (Full Breakdown)</div><div class="post-meta">Uploaded 19 days ago · 21,300 views</div></div><span class="post-stats">👍 1.4K</span></div>
+        </div>
+        <button class="save-btn" style="margin-top:16px" onclick="showToast('Opening YouTube Studio sync...')">Manage YouTube Channel</button>
+      </div>
+
+      <div class="card" style="margin-top:20px;text-align:center;padding:28px">
+        <div style="font-size:14px;color:var(--muted);margin-bottom:14px">Want to connect another platform?</div>
+        <div class="platform-chips" style="justify-content:center">
+          <div class="chip" onclick="showToast('Redirecting to TikTok auth...')">🎵 TikTok</div>
+          <div class="chip" onclick="showToast('Redirecting to Pinterest auth...')">📌 Pinterest</div>
+          <div class="chip" onclick="showToast('Redirecting to Threads auth...')">🧵 Threads</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBSCRIPTION -->
+    <div class="page" id="page-subscription">
+      <div class="page-header"><h1>Subscription</h1><p>Manage your plan, billing, and usage.</p></div>
+      <div class="bottom-row" style="align-items:start">
+        <div class="card" style="padding:32px">
+          <div style="font-size:13px;color:var(--accent2);font-weight:600;margin-bottom:8px">CURRENT PLAN</div>
+          <div style="font-size:28px;font-weight:700;margin-bottom:4px">Pro Plan</div>
+          <div style="color:var(--muted);margin-bottom:24px">$29/month · Renews July 29, 2026</div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
+            <div>✅ Unlimited posts</div><div>✅ AI content generation</div>
+            <div>✅ Advanced analytics</div><div>✅ 5 social accounts (incl. YouTube)</div>
+            <div>✅ Zapier & Google Analytics</div>
+          </div>
+          <button class="save-btn" onclick="showToast('Redirecting to billing portal...')">Manage Billing</button>
+          <button class="cancel-btn" onclick="showToast('Comparing plans...')">View Other Plans</button>
+        </div>
+        <div class="card" style="padding:28px">
+          <div class="card-title" style="margin-bottom:16px">Usage This Month</div>
+          <div style="margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span>Posts Published</span><span style="color:var(--muted)">142 / Unlimited</span></div>
+            <div class="platform-bar-bg"><div class="platform-bar" style="width:35%;background:var(--accent)"></div></div>
+          </div>
+          <div style="margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span>AI Generations</span><span style="color:var(--muted)">86 / 200</span></div>
+            <div class="platform-bar-bg"><div class="platform-bar" style="width:43%;background:var(--accent2)"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span>Connected Accounts</span><span style="color:var(--muted)">4 / 5</span></div>
+            <div class="platform-bar-bg"><div class="platform-bar" style="width:80%;background:var(--green)"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="table-card" style="margin-top:20px">
+        <table>
+          <thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>INV-2026-06</td><td>Jun 29, 2026</td><td>$29.00</td><td style="color:var(--green)">Paid</td></tr>
+            <tr><td>INV-2026-05</td><td>May 29, 2026</td><td>$29.00</td><td style="color:var(--green)">Paid</td></tr>
+            <tr><td>INV-2026-04</td><td>Apr 29, 2026</td><td>$29.00</td><td style="color:var(--green)">Paid</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COMPETITORS -->
     <div class="page" id="page-competitors">
-      <div class="page-header"><h1>Competitors</h1><p>Track and benchmark against competitors.</p></div>
-      <div class="table-card">
+      <div class="page-header"><h1>Competitors</h1><p>Track and benchmark against competitors across every platform.</p></div>
+      <div class="table-card" style="margin-bottom:20px">
         <table>
           <thead><tr><th>Brand</th><th>Followers</th><th>Avg. Engagement</th><th>Posts/Week</th><th>Top Platform</th></tr></thead>
           <tbody>
@@ -785,13 +923,66 @@
             <tr><td>Brand Beta</td><td>185K</td><td>5.1%</td><td>21</td><td>🐦 Twitter</td></tr>
             <tr><td>Brand Gamma</td><td>142K</td><td>2.9%</td><td>9</td><td>▶️ YouTube</td></tr>
             <tr><td>Brand Delta</td><td>98K</td><td>6.4%</td><td>18</td><td>💼 LinkedIn</td></tr>
+            <tr><td><strong style="color:var(--accent2)">SocialFlow (You)</strong></td><td>151.6K</td><td>4.2%</td><td>17</td><td>📸 Instagram</td></tr>
           </tbody>
         </table>
       </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">YouTube Benchmark</span></div>
+        <div class="platforms-list">
+          <div class="platform-item"><div class="platform-icon">▶️</div><div class="platform-info"><div class="platform-name">Brand Gamma — 142K subs</div><div class="platform-bar-bg"><div class="platform-bar" style="width:82%;background:#ff0000"></div></div></div><span class="platform-pct">82</span></div>
+          <div class="platform-item"><div class="platform-icon">▶️</div><div class="platform-info"><div class="platform-name">SocialFlow (You) — 6.9K subs</div><div class="platform-bar-bg"><div class="platform-bar" style="width:24%;background:var(--accent2)"></div></div></div><span class="platform-pct">24</span></div>
+          <div class="platform-item"><div class="platform-icon">▶️</div><div class="platform-info"><div class="platform-name">Brand Beta — 31K subs</div><div class="platform-bar-bg"><div class="platform-bar" style="width:55%;background:#1da1f2"></div></div></div><span class="platform-pct">55</span></div>
+        </div>
+      </div>
     </div>
-    <div class="page" id="page-admin"><div class="page-header"><h1>Admin Panel</h1><p>System administration and user management.</p></div><div class="card" style="padding:32px;text-align:center"><div style="font-size:48px;margin-bottom:16px">🛡️</div><p style="color:var(--muted)">Admin panel is restricted to super-admins.</p></div></div>
-    <div class="page" id="page-faq"><div class="page-header"><h1>FAQ</h1><p>Frequently asked questions.</p></div><div class="card" style="padding:32px"><div style="display:flex;flex-direction:column;gap:16px"><div style="border:1px solid var(--border);border-radius:8px;padding:16px"><div style="font-weight:600;margin-bottom:6px">How do I connect a new social account?</div><div style="color:var(--muted);font-size:14px">Go to Platforms → click Add Account → authorize via OAuth.</div></div><div style="border:1px solid var(--border);border-radius:8px;padding:16px"><div style="font-weight:600;margin-bottom:6px">How does AI content generation work?</div><div style="color:var(--muted);font-size:14px">Our AI uses your brand voice settings to generate platform-optimized content from your brief.</div></div><div style="border:1px solid var(--border);border-radius:8px;padding:16px"><div style="font-weight:600;margin-bottom:6px">Can I schedule posts in advance?</div><div style="color:var(--muted);font-size:14px">Yes! Use the Scheduler to queue posts days or weeks ahead.</div></div></div></div></div>
-    <div class="page" id="page-ratings"><div class="page-header"><h1>Ratings</h1><p>See what users say about SocialFlow.</p></div><div class="stat-grid"><div class="stat-card"><div class="stat-top"><span>⭐</span></div><div class="stat-val">4.8</div><div class="stat-label">App Store Rating</div></div><div class="stat-card"><div class="stat-top"><span>👥</span></div><div class="stat-val">12,400</div><div class="stat-label">Total Reviews</div></div><div class="stat-card"><div class="stat-top"><span>💬</span></div><div class="stat-val">98%</div><div class="stat-label">Positive Sentiment</div></div></div></div>
+
+    <!-- ADMIN -->
+    <div class="page" id="page-admin">
+      <div class="page-header"><h1>Admin Panel</h1><p>System administration and user management.</p></div>
+      <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px">
+        <div class="stat-card"><div class="stat-top"><span class="stat-icon">👥</span></div><div class="stat-val">14</div><div class="stat-label">Team Members</div></div>
+        <div class="stat-card"><div class="stat-top"><span class="stat-icon">🔑</span></div><div class="stat-val">3</div><div class="stat-label">Admin Roles</div></div>
+        <div class="stat-card"><div class="stat-top"><span class="stat-icon">📜</span></div><div class="stat-val">1,204</div><div class="stat-label">Audit Log Entries</div></div>
+      </div>
+      <div class="card" style="padding:32px;text-align:center">
+        <div style="font-size:48px;margin-bottom:16px">🛡️</div>
+        <h2 style="margin-bottom:8px">Restricted Area</h2>
+        <p style="color:var(--muted)">Full admin controls (user roles, billing overrides, audit logs) are restricted to super-admins. Contact your workspace owner for access.</p>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="page" id="page-faq">
+      <div class="page-header"><h1>FAQ</h1><p>Frequently asked questions.</p></div>
+      <div class="card" style="padding:32px">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="border:1px solid var(--border);border-radius:8px;padding:16px"><div style="font-weight:600;margin-bottom:6px">How do I connect a new social account?</div><div style="color:var(--muted);font-size:14px">Go to Platforms → click "Connect another platform" → authorize via OAuth. YouTube, Instagram, Twitter/X, LinkedIn, and Facebook are all supported.</div></div>
+          <div style="border:1px solid var(--border);border-radius:8px;padding:16px"><div style="font-weight:600;margin-bottom:6px">How does AI content generation work?</div><div style="color:var(--muted);font-size:14px">Our AI uses your brand voice settings to generate platform-optimized captions, video scripts, YouTube titles/descriptions, and hashtags from a short brief.</div></div>
+          <div style="border:1px solid var(--border);border-radius:8px;padding:16px"><div style="font-weight:600;margin-bottom:6px">Can I schedule posts in advance?</div><div style="color:var(--muted);font-size:14px">Yes! Use the Scheduler to queue posts (including YouTube uploads) days or weeks ahead, with a visual calendar.</div></div>
+          <div style="border:1px solid var(--border);border-radius:8px;padding:16px"><div style="font-weight:600;margin-bottom:6px">Does SocialFlow support YouTube?</div><div style="color:var(--muted);font-size:14px">Yes — connect your channel under Platforms to track subscribers, views, watch time, and manage uploads alongside your other social accounts.</div></div>
+          <div style="border:1px solid var(--border);border-radius:8px;padding:16px"><div style="font-weight:600;margin-bottom:6px">What happens if I exceed my AI generation limit?</div><div style="color:var(--muted);font-size:14px">You'll be prompted to upgrade your plan. Existing scheduled posts and automations continue to run normally.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RATINGS -->
+    <div class="page" id="page-ratings">
+      <div class="page-header"><h1>Ratings</h1><p>See what users say about SocialFlow.</p></div>
+      <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px">
+        <div class="stat-card"><div class="stat-top"><span class="stat-icon">⭐</span></div><div class="stat-val">4.8</div><div class="stat-label">App Store Rating</div></div>
+        <div class="stat-card"><div class="stat-top"><span class="stat-icon">👥</span></div><div class="stat-val">12,400</div><div class="stat-label">Total Reviews</div></div>
+        <div class="stat-card"><div class="stat-top"><span class="stat-icon">💬</span></div><div class="stat-val">98%</div><div class="stat-label">Positive Sentiment</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Recent Reviews</span></div>
+        <div class="post-list">
+          <div class="post-item"><div class="post-thumb">⭐</div><div class="post-content"><div class="post-title">"Cut my content planning time in half. The YouTube integration is a game-changer."</div><div class="post-meta">— Maria T. · 5 stars</div></div></div>
+          <div class="post-item"><div class="post-thumb">⭐</div><div class="post-content"><div class="post-title">"Best scheduler I've used across 4 different tools."</div><div class="post-meta">— Devon K. · 5 stars</div></div></div>
+          <div class="post-item"><div class="post-thumb">⭐</div><div class="post-content"><div class="post-title">"AI captions actually sound like our brand voice, not generic filler."</div><div class="post-meta">— Priya S. · 4 stars</div></div></div>
+        </div>
+      </div>
+    </div>
 
   </div><!-- /content -->
 </div><!-- /main -->
@@ -823,6 +1014,11 @@
 <div class="toast" id="toast"></div>
 
 <script>
+  function selectOnly(chip) {
+    chip.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    chip.classList.add('selected');
+  }
+
   // Navigation
   function navigate(page, btn) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
